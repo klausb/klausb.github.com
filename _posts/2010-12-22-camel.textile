@@ -5,7 +5,7 @@ title: groovy, camel and curry
 
 h1. {{ page.title }}
 
-p(meta). 21 Dec 2010 - Boeblingen, Germany
+p(meta). 21 Dec 2010
 
 In a recent project I had to assemble camel routes from a config file. As a fan of the Groovy language, I've chosen Groovy for the config style and for the implementation of the route builder.
 Conceptually, the code creates routes from a timer to a bean that collects data and finally to a consumer of the bean output (e.g. a store). Furthermore, the bean had to be stateless since the same bean was potentially used in multiple routes.
