@@ -5,7 +5,7 @@ title: groovy, camel and curry
 
 h1. {{ page.title }}
 
-p(meta). 22 Dec 2010 - Boeblingen, Germany
+p(meta). 21 Dec 2010 - Boeblingen, Germany
 
 In a recent project I had to assemble camel routes from a config file. As a fan of the Groovy language, I've chosen Groovy for the config style and for the implementation of the route builder.
 Conceptually, the code creates routes from a timer to a bean that collects data and finally to a consumer of the bean output (e.g. a store). Furthermore, the bean had to be stateless since the same bean was potentially used in multiple routes.
@@ -24,14 +24,14 @@ bc.. myCollectionTask {
 }
  
 yourCollectionTask {
-	type = 'yourBean'
-	host = 'yourhost.com'
-	port = '4711'
-	user = 'root'
-	password = 'secret'
-	polling {
-		collect = 20 * 1000 // 20 seconds
-	}
+    type = 'yourBean'
+    host = 'yourhost.com'
+    port = '4711'
+    user = 'root'
+    password = 'secret'
+    polling {
+        collect = 20 * 1000 // 20 seconds
+    }
 }
  
 p. This is how you read it in
@@ -49,19 +49,19 @@ bc.. config.each{ collector, values ->
 	param.key != 'polling'
   }
 
-	// the init route (try this each second)
-	from("timer://${collector}-initiator?period=1000")
-	  .routeId("${collector}-initiator")
-	  .setBody(constant(params))
-	  .to("bean:${values.type}?method=init")
-	  .process(/* switch routes: this one off and collect on */)
+  // the init route (try this each second)
+  from("timer://${collector}-initiator?period=1000")
+    .routeId("${collector}-initiator")
+    .setBody(constant(params))
+    .to("bean:${values.type}?method=init")
+    .process(/* switch routes: this one off and collect on */)
 
-	// the collect route
-	from("timer://${collector}-c ollect?period=${values.polling.collect}")
-	  .routeId("${collector}-collect").noAutoStartup()
-	  .process(/* set the context in the body of the exchange */)
-	  .to("bean:${values.type}?method=collect")
-	  .to("bean:store");
+  // the collect route
+  from("timer://${collector}-c ollect?period=${values.polling.collect}")
+    .routeId("${collector}-collect").noAutoStartup()
+    .process(/* set the context in the body of the exchange */)
+    .to("bean:${values.type}?method=collect")
+    .to("bean:store");
 }
  
 p. Switching the routes from init to collect is done in a camel process step. The same for setting the context in the collector route. The problem here is, that you cannot simply write a processor, which refers to the collector parameter of the enclosing each closure. The processor object is executed later, when the route is running.  This code runs during route construction. You would refer to a rather undefined value of collector. What we need is a way to describe a processor object, that is associated with the correct collector name. Now this is where Groovy closures and currying comes very handy. Here is how the closures look like:
@@ -94,4 +94,3 @@ from("timer://${collector}-c ollect?period=${values.polling.collect}")
   .to("bean:store");
  
 p. That's it. Although this is not production ready code, I hope it shows the idea.
-
