@@ -1,0 +1,10 @@
+---
+layout: post
+title: Groovy, Camel and Curry
+---
+
+h1. {{ page.title }}
+
+p(meta). 22 Dec 2010 - Böblingen
+
+Blub
