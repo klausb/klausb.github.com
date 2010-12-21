@@ -23,7 +23,7 @@ bc.. myCollectionTask {
     }
 }
  
-bc.. yourCollectionTask {
+yourCollectionTask {
     type = 'yourBean'
     host = 'yourhost.com'
     port = '4711'
@@ -70,7 +70,6 @@ bc.. def routeSwitcher = { collector, Exchange exchange ->
       if (exchange.in.body) {
         contexts[collector] = exchange.in.body; // get the context coming from init
         exchange.context.stopRoute("${collector}-initiator")
-        exchange.context.startRoute("${collector}-discovery")
         exchange.context.startRoute("${collector}-collector")
       }
     }
