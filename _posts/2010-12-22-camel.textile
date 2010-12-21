@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Groovy, Camel and Curry
+title: groovy, camel and curry
 ---
 
 h1. {{ page.title }}
 
-p(meta). 22 Dec 2010 - Boeblingen,Germany
+p(meta). 22 Dec 2010 - Boeblingen, Germany
 
 In a recent project I had to assemble camel routes from a config file. As a fan of the Groovy language,. I've chosen Groovy for the config style and for the implementation of the route builder.
 Conceptually, the code creates routes from a timer to a bean that collects data and finally to a consumer of the bean output (e.g. a store). Furthermore, the bean had to be stateless since the same bean was potentially used in multiple routes.
@@ -14,16 +14,16 @@ We split this task into two routes per collector: one for calling the init metho
  
 Ok, enough theory. This is an example of the config file
  
-myCollectionTask {
+@myCollectionTask {
     type = 'myBean'
     user = 'usr'
     password = 'passwd'
     polling {
         collect = 2000 // 2 seconds
     }
-}
+}@
  
-yourCollectionTask {
+@yourCollectionTask {
     type = 'yourBean'
     host = 'yourhost.com'
     port = '4711'
@@ -32,7 +32,7 @@ yourCollectionTask {
     polling {
         collect = 20 * 1000 // 20 seconds
     }
-}
+}@
  
 This is how you read it in
 def config = new ConfigSlurper().parse(new File("collectors.cfg").toURL())
