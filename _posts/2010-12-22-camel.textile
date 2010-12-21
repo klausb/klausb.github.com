@@ -35,9 +35,10 @@ yourCollectionTask {
 }
  
 p. This is how you read it in
-def config = new ConfigSlurper().parse(new File("collectors.cfg").toURL())
+
+bc.. def config = new ConfigSlurper().parse(new File("collectors.cfg").toURL())
  
-Now we want to create camel routes automatically. Let's loop over the config:
+p. Now we want to create camel routes automatically. Let's loop over the config:
  
 bc.. config.each{ collector, values ->
  
